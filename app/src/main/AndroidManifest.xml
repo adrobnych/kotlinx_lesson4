@@ -9,9 +9,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
         <service
-                android:name=".IntentService"
+                android:name=".MyService"
                 android:exported="false">
         </service>
 
@@ -23,6 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
     </application>
+
 </manifest>
