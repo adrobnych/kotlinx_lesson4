@@ -1,5 +1,8 @@
 package com.codegemz.kotlinx.lesson4
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.app.TimePickerDialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -12,6 +15,8 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var view: MainView
@@ -50,18 +55,41 @@ class MainActivity : AppCompatActivity() {
         MyService.stopService(this)
         unbindService(serviceConnection)
     }
+
+    fun setAlarm(alarmTime: Long) {
+        // setup alarm
+    }
 }
 
 class MainView : AnkoComponent<MainActivity> {
     private lateinit var playButton: Button
 
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-        relativeLayout {
-            playButton = button("Waiting for service..") {
+        verticalLayout {
+            playButton = button("Waiting for service..").lparams {
+                gravity = Gravity.CENTER_HORIZONTAL
+                topMargin = dip(70)
+            }
 
+            val calendar = Calendar.getInstance()
+            val timeTextView = textView {
+                text = SimpleDateFormat("HH:mm").format(calendar.time)
+                textSize = 24f
             }.lparams {
                 gravity = Gravity.CENTER_HORIZONTAL
                 topMargin = dip(70)
+            }
+
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hour)
+                calendar.set(Calendar.MINUTE, minute)
+                // call function
+                timeTextView.text = SimpleDateFormat("HH:mm").format(calendar.time)
+            }
+
+            timeTextView.setOnClickListener {
+                TimePickerDialog(ctx, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(
+                    Calendar.MINUTE), true).show()
             }
         }
     }

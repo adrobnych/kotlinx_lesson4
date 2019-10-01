@@ -37,7 +37,7 @@ class MyService : Service() {
         return START_STICKY
     }
 
-    fun onHandleIntent(intent: Intent?) {
+    private fun onHandleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_PLAY_MUSIC -> {
                 if (mediaPlayer.isPlaying) {
@@ -63,6 +63,7 @@ class MyService : Service() {
         }
     }
 
+
     companion object {
         // Start play music
         fun play(context: Context) {
@@ -85,6 +86,13 @@ class MyService : Service() {
             val intent = Intent(context, MyService::class.java)
             intent.action = ACTION_STOP_SERVICE
             context.startService(intent)
+        }
+
+        // Get play intent by context
+        fun getPlayIntent(context: Context): Intent {
+            val intent = Intent(context, MyService::class.java)
+            intent.action = ACTION_PLAY_MUSIC
+            return intent;
         }
     }
 
